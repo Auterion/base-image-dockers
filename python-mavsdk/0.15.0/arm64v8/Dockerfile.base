@@ -1,8 +1,0 @@
-FROM arm64v8/python:buster
-
-ENV GRPC_PYTHON_BUILD_EXT_COMPILER_JOBS 8
-
-RUN apt update && apt install build-essential  \
-    && apt clean \
-    && rm -rf /var/lib/apt/lists/*
-RUN pip3 install mavsdk
