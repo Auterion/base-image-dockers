@@ -1,6 +1,8 @@
-FROM arm64v8/ubuntu as build-stage
+ARG BASE_IMAGE
+FROM $BASE_IMAGE
 
 ARG DEBIAN_FRONTEND=noninteractive
+ARG MAVSDK_VERSION=develop
 
 RUN apt update && \
     apt install -y \
@@ -16,7 +18,7 @@ RUN apt update && \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /buildroot
-RUN git clone https://github.com/mavlink/MAVSDK.git -b develop --recursive mavsdk
+RUN git clone https://github.com/mavlink/MAVSDK.git -b ${MAVSDK_VERSION} --recursive mavsdk
 RUN cd mavsdk && \
     ./tools/generate_debian_changelog.sh > debian/changelog && \
 	DEB_BUILD_OPTIONS=nocheck dpkg-buildpackage -us -uc -nc -b
